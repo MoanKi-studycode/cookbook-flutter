@@ -16,6 +16,7 @@ class PageMain extends StatefulWidget {
 }
 
 class _PageMainState extends State<PageMain> {
+  static const Color mauChinh = Color(0xFFE85D04);
   int tabIndex = 0;
 
   @override
@@ -42,17 +43,37 @@ class _PageMainState extends State<PageMain> {
     ];
 
     return Scaffold(
-      body: pages[tabIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: tabIndex,
-        onTap: (i) => setState(() => tabIndex = i),
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Trang chủ"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Tìm"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Yêu thích"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Cá nhân"),
-        ],
+      body: IndexedStack(index: tabIndex, children: pages),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 14, offset: Offset(0, -4)),
+          ],
+        ),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+            child: BottomNavigationBar(
+              currentIndex: tabIndex,
+              onTap: (i) => setState(() => tabIndex = i),
+              type: BottomNavigationBarType.fixed,
+              elevation: 0,
+              backgroundColor: Colors.white,
+              selectedItemColor: mauChinh,
+              unselectedItemColor: Colors.grey.shade500,
+              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12),
+              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: "Trang chủ"),
+                BottomNavigationBarItem(icon: Icon(Icons.search_rounded), label: "Tìm"),
+                BottomNavigationBarItem(icon: Icon(Icons.favorite_rounded), label: "Yêu thích"),
+                BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: "Cá nhân"),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

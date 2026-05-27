@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nhom2_flutter_app/page/page_main.dart';
+import "package:nhom2_flutter_app/page/page_main.dart";
 import 'package:nhom2_flutter_app/page/page_splash.dart';
 import 'package:nhom2_flutter_app/page/page_welcome.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // TODO: thay URL va anon key Supabase cua nhom
 const String supabaseUrl = "https://tovuzqtkmwsoeaisbozr.supabase.co";
-const String supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvdnV6cXRrbXdzb2VhaXNib3pyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTMwMTgsImV4cCI6MjA5NTI4OTAxOH0.aWAE8aQZ8Fe7__pgIPsg8GVPxYOu4fRT6sZlQsRR1D8";
+const String supabaseAnonKey = "sb_publishable_OW8ZvoGSfTsfcDURaz_DMA_QNg0tDcA";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

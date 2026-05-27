@@ -6,6 +6,9 @@ class CategoryController extends GetxController {
   List<Category> listCategory = [];
   Map<int, int> soMonTheoDanhMuc = {};
 
+  bool isLoading = false;
+  String errorMessage = "";
+
   @override
   void onReady() {
     super.onReady();
@@ -13,20 +16,37 @@ class CategoryController extends GetxController {
   }
 
   Future<void> taiDuLieu() async {
-    listCategory = await CategorySnapshot.getListCategory();
-    final mapRecipe = await RecipeSnapshot.getMapRecipe();
-    soMonTheoDanhMuc = {};
-    for (final r in mapRecipe.values) {
-      if (r.idCategory > 0) {
-        soMonTheoDanhMuc[r.idCategory] =
-            (soMonTheoDanhMuc[r.idCategory] ?? 0) + 1;
+    try {
+      isLoading = true;
+      errorMessage = "";
+      update(["categories"]);
+
+      listCategory = await CategorySnapshot.getListCategory();
+
+      final mapRecipe = await RecipeSnapshot.getMapRecipe();
+      soMonTheoDanhMuc = {};
+
+      for (final r in mapRecipe.values) {
+        if (r.idCategory > 0) {
+          soMonTheoDanhMuc[r.idCategory] =
+              (soMonTheoDanhMuc[r.idCategory] ?? 0) + 1;
+        }
       }
+    } catch (e) {
+      errorMessage = "Không tải được danh mục từ Supabase";
+      print("[CategoryController] taiDuLieu ERROR: $e");
+    } finally {
+      isLoading = false;
+      update(["categories"]);
     }
-    update(["categories"]);
   }
 
   int demMon(int idCategory) {
     return soMonTheoDanhMuc[idCategory] ?? 0;
+  }
+
+  Future<void> refreshData() async {
+    await taiDuLieu();
   }
 
   static CategoryController get instance => Get.find<CategoryController>();

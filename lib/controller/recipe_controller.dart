@@ -7,6 +7,9 @@ class RecipeController extends GetxController {
   Map<int, Category> mapCategories = {};
   List<Recipe> listHienThi = [];
 
+  bool isLoading = false;
+  String errorMessage = "";
+
   @override
   void onReady() {
     super.onReady();
@@ -14,10 +17,21 @@ class RecipeController extends GetxController {
   }
 
   Future<void> taiDuLieu() async {
-    mapRecipes = await RecipeSnapshot.getMapRecipe();
-    mapCategories = await CategorySnapshot.getMapCategory();
-    locDanhSach();
-    update(["recipes"]);
+    try {
+      isLoading = true;
+      errorMessage = "";
+      update(["recipes"]);
+
+      mapRecipes = await RecipeSnapshot.getMapRecipe();
+      mapCategories = await CategorySnapshot.getMapCategory();
+      locDanhSach();
+    } catch (e) {
+      errorMessage = "Không tải được dữ liệu món ăn từ Supabase";
+      print("[RecipeController] taiDuLieu ERROR: $e");
+    } finally {
+      isLoading = false;
+      update(["recipes"]);
+    }
   }
 
   void locDanhSach() {
@@ -27,17 +41,25 @@ class RecipeController extends GetxController {
 
   void locTheoCategory(int idCategory) {
     if (idCategory == 0) {
-      taiDuLieu();
+      locDanhSach();
+      update(["recipes"]);
       return;
     }
+
     listHienThi = mapRecipes.values
         .where((r) => r.idCategory == idCategory)
-        .toList();
+        .toList()
+      ..sort((a, b) => a.id.compareTo(b.id));
+
     update(["recipes"]);
   }
 
   String tenCategory(int idCategory) {
     return mapCategories[idCategory]?.ten ?? "Khác";
+  }
+
+  Future<void> refreshData() async {
+    await taiDuLieu();
   }
 
   static RecipeController get instance => Get.find<RecipeController>();
