@@ -20,11 +20,11 @@
 
 ### Nguyễn Thành Thục
 
-- [x] Giao diện danh mục món ăn
-- [x] Giao diện danh sách món ăn
-- [x] Giao diện chi tiết công thức
-- [x] Hỗ trợ chuyển UI từ Figma sang Flutter
-- [x] Tối ưu giao diện cơ bản cho mobile
+- [ ] Giao diện danh mục món ăn
+- [ ] Giao diện danh sách món ăn
+- [ ] Giao diện chi tiết công thức
+- [ ] Hỗ trợ chuyển UI từ Figma sang Flutter
+- [ ] Tối ưu giao diện cơ bản cho mobile
 - [ ] Hoàn thiện toàn bộ UI nâng cao theo bản Figma cuối cùng
 
 ### Trần Quốc Tiên
@@ -72,5 +72,4 @@ lib/
 
 ## Tài liệu
 
-- `DATABASE_DIAGRAM.md`: mô tả database
 - `supabase_schema.sql`: script tạo bảng + policy
