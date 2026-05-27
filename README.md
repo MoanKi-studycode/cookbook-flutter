@@ -130,7 +130,7 @@ Phần UI nâng cao (Figma) theo phân công **Nguyễn Thành Thục** có th�
 | **Tỉ lệ hoàn thành ước lượng** | **~92%** (phạm vi 30%: search, filter, favorite, Supabase) |
 | **Các chức năng đã hoàn thành** | Tìm kiếm Supabase (`RecipeSnapshot.timKiem`), debounce, empty/error state; lọc theo `idCategory` + lọc tên trong list; `FavoriteSnapshot` CRUD + `toggleFavorite` (kèm mã `-1` chưa đăng nhập); `FavoriteController` refresh + cache `favoriteIds`; màn yêu thích (loading, pull refresh, nút reload); `WidgetRecipeCard` tim + điều hướng detail; bổ sung UI home/category/list/detail liên quan |
 | **Các phần đã bổ sung thêm** | Không cần patch lớn trước merge — branch đã có empty state, loading, error text, refresh favorite, kiểm tra user null. Commit merge: `5a62bc9` |
-| **Các lỗi / thiếu còn lại** | Chưa có test tự động; file `Data/SQLQuery39.sql` là patch RLS Favorite tùy chọn (schema chính: `supabase_schema.sql`); `flutter analyze` cần chạy trên máy có Flutter SDK |
+| **Các lỗi / thiếu còn lại** | Chưa có test tự động; `flutter analyze` cần chạy trên máy có Flutter SDK |
 | **Trạng thái merge** | **Đã merge vào `main`** (fast-forward, không conflict) — `main` trỏ commit `5a62bc9` |
 
 **Checklist kiểm tra nhanh sau merge:**
@@ -217,7 +217,6 @@ flutter run
 
 - [`DATABASE_DIAGRAM.md`](DATABASE_DIAGRAM.md) — ERD, RLS, mapping model Dart
 - [`supabase_schema.sql`](supabase_schema.sql) — Script tạo DB đầy đủ
-- [`Data/SQLQuery39.sql`](Data/SQLQuery39.sql) — (tùy chọn) patch RLS bảng `Favorite` nếu policy cũ khác tên
 
 ---
 
