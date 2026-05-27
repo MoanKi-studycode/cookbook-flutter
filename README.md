@@ -10,11 +10,31 @@
 
 ## Chức năng đã xây dựng (theo thành viên)
 
-| Thành viên | Tỷ lệ | Phần đã xây dựng |
-|-----------|------|------------------|
-| Trần Anh Tín | 40% | Cấu trúc project, cấu hình Supabase, Auth (login/register/OTP/session), model/helper/controller chính, điều hướng app, thiết kế database và tài liệu tổng hợp. |
-| Nguyễn Thành Thục | 30% | Thiết kế và hoàn thiện UI các màn hình chính: danh mục, danh sách món, chi tiết công thức; hỗ trợ chuyển UI từ Figma sang Flutter và tối ưu hiển thị mobile. |
-| Trần Quốc Tiên | 30% | Tìm kiếm món theo tên, lọc món theo danh mục, thêm/xóa món yêu thích, màn hình yêu thích, xử lý dữ liệu Supabase cho search/filter/favorite và kiểm thử các chức năng này. |
+### Trần Anh Tín
+
+- [x] Cấu trúc project Flutter + điều hướng chính
+- [x] Cấu hình Supabase và kết nối app
+- [x] Auth: đăng nhập / đăng ký / OTP / quản lý session
+- [x] Thiết kế database, model/helper/controller chính
+- [x] Tài liệu database (`DATABASE_DIAGRAM.md`, `supabase_schema.sql`)
+
+### Nguyễn Thành Thục
+
+- [x] Giao diện danh mục món ăn
+- [x] Giao diện danh sách món ăn
+- [x] Giao diện chi tiết công thức
+- [x] Hỗ trợ chuyển UI từ Figma sang Flutter
+- [x] Tối ưu giao diện cơ bản cho mobile
+- [ ] Hoàn thiện toàn bộ UI nâng cao theo bản Figma cuối cùng
+
+### Trần Quốc Tiên
+
+- [x] Tìm kiếm món ăn theo tên
+- [x] Lọc món ăn theo danh mục
+- [x] Lưu / bỏ lưu món yêu thích
+- [x] Màn hình danh sách món yêu thích
+- [x] Xử lý dữ liệu Supabase cho search/filter/favorite
+- [ ] Bộ kiểm thử tự động cho search/filter/favorite (hiện chủ yếu test tay)
 
 ## Cấu hình nhanh
 
