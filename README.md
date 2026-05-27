@@ -62,13 +62,24 @@ flutter run
 
 | Chức năng | Màn hình | API / controller |
 |-----------|----------|------------------|
-| Trang chủ — chào tên, menu, danh mục, món phổ biến | `page_home.dart` | `RecipeController`, `CategoryController` |
-| Danh mục (list) | `page_category.dart` | `CategorySnapshot` |
-| Danh sách món theo danh mục / tất cả | `page_recipe_list.dart` | Lọc client + ô tìm trong list |
-| Chi tiết món (ảnh, mô tả, NL, cách làm) | `page_recipe_detail.dart` | `RecipeSnapshot.getRecipeById` |
-| Tìm kiếm theo tên | `page_search.dart` | `RecipeSnapshot.timKiem` (ilike) |
-| Yêu thích — thêm/xóa, danh sách | `page_favorite.dart`, icon tim | `FavoriteSnapshot.toggleFavorite` |
+| Trang chủ — chào tên, danh mục, món phổ biến | `page_home.dart` | `RecipeController`, `CategoryController` |
+| Danh mục (list + lọc) | `page_category.dart` | `CategoryController`, điều hướng `PageRecipeList` |
+| Danh sách món theo danh mục / tất cả | `page_recipe_list.dart` | Lọc `idCategory` + tìm trong list, `refreshData` |
+| Chi tiết món (ảnh, mô tả, NL, cách làm, tim) | `page_recipe_detail.dart` | `RecipeSnapshot.getRecipeById`, `FavoriteController` |
+| **Tìm kiếm theo tên (Supabase ilike)** | `page_search.dart` | `RecipeSnapshot.timKiem`, debounce, empty/error state |
+| **Yêu thích — thêm/xóa, danh sách, refresh** | `page_favorite.dart`, `widget_recipe_card.dart` | `FavoriteSnapshot.toggleFavorite`, kiểm tra đăng nhập |
 | Bottom nav 4 tab | `page_main.dart` | Trang chủ / Tìm / Yêu thích / Cá nhân |
+
+### Trần Quốc Tiên — search / filter / favorite (đã merge `main`)
+
+| Tiêu chí | Trạng thái |
+|----------|------------|
+| Ô tìm kiếm + gọi Supabase | Có — `PageSearch`, debounce 450ms |
+| Hiển thị kết quả / không có kết quả | Có — empty state + nút thử lại khi lỗi |
+| Lọc theo danh mục | Có — `PageRecipeList` + `RecipeController.locTheoCategory` |
+| Thêm/xóa favorite + bảng `Favorite` | Có — `toggleFavorite`, return `-1` nếu chưa login |
+| Màn yêu thích | Có — loading, refresh, pull-to-refresh, empty state |
+| Card → chi tiết món | Có — `WidgetRecipeCard` + `Navigator.push` |
 
 ### Kỹ thuật
 
@@ -94,8 +105,40 @@ Chi tiết bảng, RLS, FK: xem [`DATABASE_DIAGRAM.md`](DATABASE_DIAGRAM.md).
 | Đa ngôn ngữ / theme tối | Chưa có |
 | Unit/widget test thật | Chỉ placeholder trong `test/widget_test.dart` |
 | CI/CD GitLab build APK tự động | Chưa cấu hình (có thể thêm sau) |
+| Test tự động search/filter/favorite | Chưa có test script — chỉ test tay trên thiết bị |
 
-Phần UI placeholder theo phân công nhóm (nếu còn) nên bổ sung trên nhánh feature riêng, tránh conflict file core auth/data.
+Phần UI nâng cao (Figma) theo phân công **Nguyễn Thành Thục** có thể tiếp tục trên nhánh riêng, tránh conflict file core auth/data.
+
+---
+
+## Phân công công việc nhóm
+
+| Thành viên | Mức độ đóng góp | Công việc |
+|-----------|-----------------|-----------|
+| Trần Anh Tín | 40% | Thiết kế cấu trúc project Flutter; cấu hình Supabase; xây dựng đăng nhập, đăng ký, xác thực OTP, quản lý session; thiết kế database; xây dựng model, helper, controller chính; điều hướng app; tổng hợp và hoàn thiện báo cáo. |
+| Nguyễn Thành Thục | 30% | Thiết kế và xây dựng giao diện người dùng; xây dựng giao diện danh mục món ăn, danh sách món ăn và chi tiết công thức; hỗ trợ chuyển đổi giao diện từ Figma sang Flutter; tối ưu trải nghiệm giao diện trên thiết bị di động. |
+| Trần Quốc Tiên | 30% | Xây dựng chức năng tìm kiếm và lọc món ăn; xây dựng chức năng lưu và hiển thị món ăn yêu thích; xử lý và hiển thị dữ liệu từ Supabase; kiểm thử chức năng tìm kiếm, lọc, yêu thích và hỗ trợ hoàn thiện màn hình chức năng. |
+
+---
+
+## Trạng thái branch thành viên
+
+### Branch `tran-quoc-tien` (Trần Quốc Tiên)
+
+| Mục | Kết quả |
+|-----|---------|
+| **Tỉ lệ hoàn thành ước lượng** | **~92%** (phạm vi 30%: search, filter, favorite, Supabase) |
+| **Các chức năng đã hoàn thành** | Tìm kiếm Supabase (`RecipeSnapshot.timKiem`), debounce, empty/error state; lọc theo `idCategory` + lọc tên trong list; `FavoriteSnapshot` CRUD + `toggleFavorite` (kèm mã `-1` chưa đăng nhập); `FavoriteController` refresh + cache `favoriteIds`; màn yêu thích (loading, pull refresh, nút reload); `WidgetRecipeCard` tim + điều hướng detail; bổ sung UI home/category/list/detail liên quan |
+| **Các phần đã bổ sung thêm** | Không cần patch lớn trước merge — branch đã có empty state, loading, error text, refresh favorite, kiểm tra user null. Commit merge: `5a62bc9` |
+| **Các lỗi / thiếu còn lại** | Chưa có test tự động; file `Data/SQLQuery39.sql` là patch RLS Favorite tùy chọn (schema chính: `supabase_schema.sql`); `flutter analyze` cần chạy trên máy có Flutter SDK |
+| **Trạng thái merge** | **Đã merge vào `main`** (fast-forward, không conflict) — `main` trỏ commit `5a62bc9` |
+
+**Checklist kiểm tra nhanh sau merge:**
+
+- [ ] `flutter pub get` && `flutter analyze` (trên máy dev)
+- [ ] Đăng nhập → tìm món → mở chi tiết
+- [ ] Bấm tim → tab Yêu thích cập nhật
+- [ ] Lọc danh mục từ Home / Category
 
 ---
 
@@ -174,16 +217,8 @@ flutter run
 
 - [`DATABASE_DIAGRAM.md`](DATABASE_DIAGRAM.md) — ERD, RLS, mapping model Dart
 - [`supabase_schema.sql`](supabase_schema.sql) — Script tạo DB đầy đủ
+- [`Data/SQLQuery39.sql`](Data/SQLQuery39.sql) — (tùy chọn) patch RLS bảng `Favorite` nếu policy cũ khác tên
 
 ---
 
-## Thành viên & phạm vi (tham khảo)
-
-| Phạm vi | Nội dung |
-|--------|----------|
-| Core (đã có) | Auth, OTP, đồng bộ `"User"`, model/Snapshot, controllers, điều hướng chính, CRUD yêu thích, đọc món/danh mục |
-| Mở rộng (nhánh riêng) | UI nâng cao, CRUD admin món, sửa profile, test, CI GitLab |
-
----
-
-*CookBook — NTU / nhóm 2 Flutter. Cập nhật README theo codebase hiện tại.*
+*CookBook — NTU / nhóm 2 Flutter. Cập nhật README sau merge `tran-quoc-tien`.*
