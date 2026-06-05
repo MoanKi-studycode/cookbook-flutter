@@ -21,8 +21,6 @@ class Favorite {
     );
   }
 
-  /// Map dùng khi insert/update lên Supabase.
-  /// Không gửi id khi id = 0 để Supabase tự tăng khóa chính.
   Map<String, dynamic> toInsertMap() {
     return {
       'userId': userId,
@@ -148,10 +146,6 @@ class FavoriteSnapshot {
     }
   }
 
-  /// Trả về:
-  ///  1  = cập nhật thành công
-  ///  0  = lỗi Supabase / lỗi dữ liệu
-  /// -1  = chưa đăng nhập
   static Future<int> toggleFavorite(int recipeId) async {
     final userId = getCurrentUserId();
     if (userId == null) return -1;

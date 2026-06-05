@@ -1,12 +1,29 @@
 import 'package:nhom2_flutter_app/helper/supabase_helper.dart';
 
+int chuanHoaDoKho(int doKho) {
+  if (doKho <= 1) return 1;
+  if (doKho >= 3) return 3;
+  return 2;
+}
+
+String getDoKhoText(int doKho) {
+  switch (chuanHoaDoKho(doKho)) {
+    case 1:
+      return "Dễ";
+    case 3:
+      return "Khó";
+    default:
+      return "Trung bình";
+  }
+}
+
 class Recipe {
   int id;
   String ten;
   String moTa;
   String hinhAnh;
   int thoiGian;
-  double danhGia;
+  int doKho;
   int idCategory;
   String nguyenLieu;
   String cachLam;
@@ -17,20 +34,25 @@ class Recipe {
     this.moTa = "",
     this.hinhAnh = "",
     this.thoiGian = 0,
-    this.danhGia = 0,
+    this.doKho = 2,
     this.idCategory = 0,
     this.nguyenLieu = "",
     this.cachLam = "",
   });
 
   factory Recipe.fromMap(Map<String, dynamic> map) {
+    int docDoKho = 2;
+    if (map['doKho'] != null) {
+      docDoKho = chuanHoaDoKho(int.tryParse(map['doKho'].toString()) ?? 2);
+    }
+
     return Recipe(
       id: int.tryParse(map['id'].toString()) ?? 0,
       ten: map['ten']?.toString() ?? "",
       moTa: map['moTa']?.toString() ?? "",
       hinhAnh: map['hinhAnh']?.toString() ?? "",
       thoiGian: int.tryParse(map['thoiGian'].toString()) ?? 0,
-      danhGia: double.tryParse(map['danhGia'].toString()) ?? 0,
+      doKho: docDoKho,
       idCategory: int.tryParse(map['idCategory'].toString()) ?? 0,
       nguyenLieu: map['nguyenLieu']?.toString() ?? "",
       cachLam: map['cachLam']?.toString() ?? "",
@@ -44,7 +66,7 @@ class Recipe {
       'moTa': moTa,
       'hinhAnh': hinhAnh,
       'thoiGian': thoiGian,
-      'danhGia': danhGia,
+      'doKho': doKho,
       'idCategory': idCategory,
       'nguyenLieu': nguyenLieu,
       'cachLam': cachLam,

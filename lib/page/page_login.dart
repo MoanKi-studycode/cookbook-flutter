@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
-import 'package:nhom2_flutter_app/page/page_main.dart';
 import 'package:nhom2_flutter_app/page/page_register.dart';
-import 'package:nhom2_flutter_app/page/page_verify_otp.dart';
 
 class PageLogin extends StatefulWidget {
   const PageLogin({super.key});
@@ -17,8 +15,8 @@ class _PageLoginState extends State<PageLogin> {
   final TextEditingController txtPassword = TextEditingController();
   bool dangXuLy = false;
 
-  static const Color mauCamNut = Color(0xFFF2781B);
-  static const Color mauNenCamNhat = Color(0xFFFFF8F1);
+  static Color mauCamNut = Color(0xFFF2781B);
+  static Color mauNenCamNhat = Color(0xFFFFF8F1);
 
   @override
   void dispose() {
@@ -45,15 +43,11 @@ class _PageLoginState extends State<PageLogin> {
     try {
       await signInAuth(txtEmail.text, txtPassword.text);
       if (!mounted) return;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const PageMain()),
-            (route) => false,
-      );
     } catch (e) {
+      print("[PageLogin] dangNhap ERROR: $e");
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Đăng nhập thất bại: $e")),
+        SnackBar(content: Text("Không thể đăng nhập. Vui lòng kiểm tra email và mật khẩu.")),
       );
     } finally {
       if (mounted) setState(() => dangXuLy = false);
@@ -65,7 +59,7 @@ class _PageLoginState extends State<PageLogin> {
     return Scaffold(
       backgroundColor: mauNenCamNhat,
       appBar: AppBar(
-        title: const Text("Đăng nhập", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Đăng nhập", style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Colors.black87,
@@ -73,7 +67,7 @@ class _PageLoginState extends State<PageLogin> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Form(
             key: _formKey,
             child: Column(
@@ -130,11 +124,11 @@ class _PageLoginState extends State<PageLogin> {
                     ),
                     onPressed: dangXuLy ? null : dangNhap,
                     child: dangXuLy
-                        ? const SizedBox(
+                        ? SizedBox(
                       height: 20, width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
-                        : const Text("Đăng nhập", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        : Text("Đăng nhập", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -165,7 +159,7 @@ class _PageLoginState extends State<PageLogin> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const PageRegister()),
+                            MaterialPageRoute(builder: (context) => PageRegister()),
                           );
                         },
                         child: Text(

@@ -129,7 +129,7 @@ Không tạo trong `supabase_schema.sql`. App chỉ gọi API Auth.
 | `moTa` | `text` | | | default `''` | `moTa` |
 | `hinhAnh` | `text` | | | default `''` | `hinhAnh` (URL ảnh) |
 | `thoiGian` | `int` | | | default `0` | `thoiGian` (phút) |
-| `danhGia` | `numeric` | | | default `0` | `danhGia` (`double` Dart) |
+| `doKho` | `int` | | | default `2`, check 1–3 | `doKho` (`int` Dart): 1 Dễ, 2 Trung bình, 3 Khó |
 | `idCategory` | `bigint` | | → `"Category"(id)` | Có (null được) | `idCategory` |
 | `nguyenLieu` | `text` | | | default `''` | `nguyenLieu` (chuỗi, tách dòng bằng `,` `;` `\n`) |
 | `cachLam` | `text` | | | default `''` | `cachLam` |
@@ -222,7 +222,7 @@ erDiagram
         text moTa
         text hinhAnh
         int thoiGian
-        numeric danhGia
+        int doKho
         bigint idCategory FK
         text nguyenLieu
         text cachLam
@@ -365,11 +365,11 @@ Client global: `final supabase = Supabase.instance.client;`
 
 ### Recipe
 
-| id | ten | idCategory | thoiGian | danhGia |
-|----|-----|------------|----------|---------|
-| 1 | Pho bo | 1 | 45 | 4.8 |
-| 2 | Com tam | 1 | 30 | 4.5 |
-| 3 | Banh flan | 3 | 60 | 4.2 |
+| id | ten | idCategory | thoiGian | doKho |
+|----|-----|------------|----------|-------|
+| 1 | Pho bo | 1 | 45 | 3 (Khó) |
+| 2 | Com tam | 1 | 30 | 2 (Trung bình) |
+| 3 | Banh flan | 3 | 60 | 1 (Dễ) |
 
 ### User / Favorite
 
@@ -404,7 +404,7 @@ Bảng `"User"`: script tạo bảng nằm cuối file nếu project chưa chạ
 | `recipes.title` | `Recipe.ten` |
 | `recipes.description` | `Recipe.moTa` |
 | `recipes.steps` | `Recipe.cachLam` (+ `nguyenLieu` riêng) |
-| `recipes.difficulty` | Dùng `danhGia` (số), không enum |
+| `recipes.difficulty` | `Recipe.doKho` (1 Dễ, 2 Trung bình, 3 Khó) |
 | `favorites.created_at` | **Không có** |
 
 Quan hệ category–recipe, user–favorite qua bảng trung gian **khớp** thiết kế chuẩn.
@@ -418,7 +418,6 @@ Quan hệ category–recipe, user–favorite qua bảng trung gian **khớp** th
 3. `Recipe.idCategory NOT NULL` — bắt buộc thuộc danh mục.
 4. RLS `insert`/`update` cho `Recipe`, `Category` — admin thêm món từ app.
 5. Bảng `nguyen_lieu` / `buoc_nau` chuẩn hóa thay một cột text.
-6. `doKho` (enum) nếu cần “độ khó” tách khỏi `danhGia`.
 
 ---
 

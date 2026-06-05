@@ -2,6 +2,10 @@
 
 Ứng dụng Flutter quản lý công thức nấu ăn, dùng Supabase cho Auth và dữ liệu.
 
+**Tên ứng dụng:** CookBook
+
+![CookBook icon](assets/icon/app_icon.png)
+
 ## About
 
 - Nền tảng: Flutter + GetX
@@ -56,11 +60,23 @@ flutter run
 ```text
 lib/
 ├── main.dart
-├── page/
-├── model/
-├── controller/
 ├── helper/
-└── widget/
+│   ├── auth_helper.dart
+│   └── supabase_helper.dart
+├── model/
+│   ├── recipe.dart
+│   ├── category.dart
+│   └── favorite.dart
+├── controller/
+│   ├── recipe_controller.dart
+│   └── favorite_controller.dart
+└── page/
+    ├── page_login.dart
+    ├── page_register.dart
+    ├── page_home.dart
+    ├── page_recipe_detail.dart
+    ├── page_search.dart
+    └── page_favorite.dart
 ```
 
 ## Hướng dẫn dùng GitLab

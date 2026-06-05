@@ -40,7 +40,7 @@ class FavoriteController extends GetxController {
       }
       listYeuThich = recipes;
     } catch (e) {
-      errorMessage = "Không tải được danh sách yêu thích";
+      errorMessage = "Không thể hiển thị danh sách yêu thích";
       print("[FavoriteController] taiYeuThich ERROR: $e");
     } finally {
       dangTai = false;

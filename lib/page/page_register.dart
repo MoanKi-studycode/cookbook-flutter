@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
 import 'package:nhom2_flutter_app/page/page_login.dart';
-import 'package:nhom2_flutter_app/page/page_main.dart';
-import 'package:nhom2_flutter_app/page/page_verify_otp.dart';
 
 class PageRegister extends StatefulWidget {
   const PageRegister({super.key});
@@ -19,8 +18,8 @@ class _PageRegisterState extends State<PageRegister> {
   final TextEditingController txtPassword2 = TextEditingController();
   bool dangXuLy = false;
 
-  static const Color mauCamNut = Color(0xFFF2781B);
-  static const Color mauNenCamNhat = Color(0xFFFFF8F1);
+  static Color mauCamNut = Color(0xFFF2781B);
+  static Color mauNenCamNhat = Color(0xFFFFF8F1);
 
   @override
   void dispose() {
@@ -43,11 +42,6 @@ class _PageRegisterState extends State<PageRegister> {
       if (!mounted) return;
 
       if (canDangNhapNgay(res)) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const PageMain()),
-              (route) => false,
-        );
         return;
       }
 
@@ -63,12 +57,13 @@ class _PageRegisterState extends State<PageRegister> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PageLogin()),
+        MaterialPageRoute(builder: (context) => PageLogin()),
       );
     } catch (e) {
+      print("[PageRegister] dangKy ERROR: $e");
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Đăng ký thất bại: $e")),
+        SnackBar(content: Text("Không thể đăng ký. Vui lòng thử lại sau.")),
       );
     } finally {
       if (mounted) setState(() => dangXuLy = false);
@@ -107,7 +102,7 @@ class _PageRegisterState extends State<PageRegister> {
                 TextFormField(
                   controller: txtHoTen,
                   decoration: InputDecoration(
-                    labelText: "Họ và tên (Display name)",
+                    labelText: "Họ và tên",
                     hintText: "Nhập họ và tên của bạn",
                     prefixIcon: Icon(Icons.person_outline),
                     filled: true,
@@ -154,7 +149,7 @@ class _PageRegisterState extends State<PageRegister> {
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: mauCamNut, width: 1.5),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
                     ),
                   ),
                   validator: (v) => (v == null || v.length < 6) ? "Ít nhất 6 ký tự" : null,
@@ -166,14 +161,14 @@ class _PageRegisterState extends State<PageRegister> {
                   decoration: InputDecoration(
                     labelText: "Xác nhận mật khẩu",
                     hintText: "••••••••",
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: Icon(Icons.lock_outline),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: mauCamNut, width: 1.5),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
                     ),
                   ),
                   validator: (v) => v != txtPassword.text ? "Không trùng khớp" : null,
@@ -191,11 +186,11 @@ class _PageRegisterState extends State<PageRegister> {
                     ),
                     onPressed: dangXuLy ? null : dangKy,
                     child: dangXuLy
-                        ? const SizedBox(
+                        ? SizedBox(
                       height: 20, width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
-                        : const Text("Đăng ký", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        : Text("Đăng ký", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -211,7 +206,7 @@ class _PageRegisterState extends State<PageRegister> {
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const PageLogin()),
+                            MaterialPageRoute(builder: (context) => PageLogin()),
                           );
                         },
                         child: Text(
@@ -228,6 +223,150 @@ class _PageRegisterState extends State<PageRegister> {
                 SizedBox(height: 20),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PageVerifyOtp extends StatefulWidget {
+  final String email;
+
+  const PageVerifyOtp({super.key, required this.email});
+
+  @override
+  State<PageVerifyOtp> createState() => _PageVerifyOtpState();
+}
+
+class _PageVerifyOtpState extends State<PageVerifyOtp> {
+  final TextEditingController txtMa = TextEditingController();
+  bool dangXuLy = false;
+  bool dangGuiLai = false;
+  int demNguoc = 60;
+
+  @override
+  void initState() {
+    super.initState();
+    batDemNguoc();
+  }
+
+  @override
+  void dispose() {
+    txtMa.dispose();
+    super.dispose();
+  }
+
+  void batDemNguoc() {
+    Future.doWhile(() async {
+      await Future.delayed(Duration(seconds: 1));
+      if (!mounted) return false;
+      if (demNguoc > 0) {
+        setState(() => demNguoc--);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  Future<void> xacThucMa() async {
+    final ma = txtMa.text.trim();
+    if (ma.length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Vui lòng nhập đủ 6 chữ số")),
+      );
+      return;
+    }
+    setState(() => dangXuLy = true);
+    try {
+      final res = await verifyEmailOtpAuth(widget.email, ma);
+      if (!mounted) return;
+    } catch (e) {
+      print("[PageVerifyOtp] xacThucMa ERROR: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Mã xác thực không đúng. Vui lòng thử lại.")),
+      );
+    } finally {
+      if (mounted) setState(() => dangXuLy = false);
+    }
+  }
+
+  Future<void> guiLaiMa() async {
+    setState(() => dangGuiLai = true);
+    try {
+      await resendSignUpOtpAuth(widget.email);
+      if (!mounted) return;
+      txtMa.clear();
+      setState(() => demNguoc = 60);
+      batDemNguoc();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Đã gửi lại mã OTP")),
+      );
+    } catch (e) {
+      print("[PageVerifyOtp] guiLaiMa ERROR: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Không thể gửi lại mã. Vui lòng thử lại sau.")),
+      );
+    } finally {
+      if (mounted) setState(() => dangGuiLai = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Xác thực OTP"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Mã gửi đến: ${widget.email}"),
+              SizedBox(height: 15),
+              TextField(
+                controller: txtMa,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  labelText: "Mã OTP (6 số)",
+                  counterText: "",
+                ),
+              ),
+              SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: dangXuLy ? null : xacThucMa,
+                child: dangXuLy
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text("Xác nhận"),
+              ),
+              SizedBox(height: 10),
+              demNguoc > 0
+                  ? Text("Gửi lại sau 00:${demNguoc.toString().padLeft(2, '0')}")
+                  : TextButton(
+                      onPressed: dangGuiLai ? null : guiLaiMa,
+                      child: Text("Gửi lại mã OTP"),
+                    ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => PageRegister()),
+                  );
+                },
+                child: Text("Quay lại đăng ký"),
+              ),
+            ],
           ),
         ),
       ),

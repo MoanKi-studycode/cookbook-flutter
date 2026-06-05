@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nhom2_flutter_app/controller/favorite_controller.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
-import 'package:nhom2_flutter_app/widget/widget_recipe_card.dart';
+import 'package:nhom2_flutter_app/page/page_home.dart';
 
 class PageFavorite extends StatefulWidget {
   const PageFavorite({super.key});
@@ -12,8 +12,8 @@ class PageFavorite extends StatefulWidget {
 }
 
 class _PageFavoriteState extends State<PageFavorite> {
-  static const Color mauChinh = Color(0xFFE85D04);
-  static const Color mauNen = Color(0xFFFFFBF7);
+  static Color mauChinh = Color(0xFFE85D04);
+  static Color mauNen = Color(0xFFFFFBF7);
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _PageFavoriteState extends State<PageFavorite> {
     return Scaffold(
       backgroundColor: mauNen,
       appBar: AppBar(
-        title: const Text("Món yêu thích"),
+        title: Text("Món yêu thích"),
         centerTitle: true,
         backgroundColor: mauNen,
         elevation: 0,
@@ -37,7 +37,7 @@ class _PageFavoriteState extends State<PageFavorite> {
         actions: [
           IconButton(
             tooltip: "Tải lại",
-            icon: const Icon(Icons.refresh_rounded),
+            icon: Icon(Icons.refresh_rounded),
             onPressed: () => FavoriteController.instance.taiYeuThich(),
           ),
         ],
@@ -56,7 +56,7 @@ class _PageFavoriteState extends State<PageFavorite> {
             }
 
             if (ctrl.dangTai) {
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,13 +81,13 @@ class _PageFavoriteState extends State<PageFavorite> {
               return RefreshIndicator(
                 onRefresh: ctrl.taiYeuThich,
                 child: ListView(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   children: [
-                    const SizedBox(height: 90),
+                    SizedBox(height: 90),
                     _emptyStateContent(
                       Icons.favorite_border_rounded,
                       "Chưa có món yêu thích",
-                      "Hãy bấm biểu tượng trái tim ở món ăn bạn thích. Kéo xuống để tải lại danh sách.",
+                      "Bấm biểu tượng trái tim ở món ăn bạn thích. Kéo xuống để tải lại danh sách.",
                     ),
                   ],
                 ),
@@ -97,13 +97,13 @@ class _PageFavoriteState extends State<PageFavorite> {
             return RefreshIndicator(
               onRefresh: ctrl.taiYeuThich,
               child: ListView(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.only(bottom: 16),
                 children: [
                   Container(
-                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 14),
-                    padding: const EdgeInsets.all(18),
+                    margin: EdgeInsets.fromLTRB(16, 8, 16, 14),
+                    padding: EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         colors: [Color(0xFFFF6B6B), mauChinh],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -113,7 +113,7 @@ class _PageFavoriteState extends State<PageFavorite> {
                         BoxShadow(
                           color: Colors.redAccent.withOpacity(0.20),
                           blurRadius: 16,
-                          offset: const Offset(0, 7),
+                          offset: Offset(0, 7),
                         ),
                       ],
                     ),
@@ -126,14 +126,14 @@ class _PageFavoriteState extends State<PageFavorite> {
                             color: Colors.white.withOpacity(0.20),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 30),
+                          child: Icon(Icons.favorite_rounded, color: Colors.white, size: 30),
                         ),
-                        const SizedBox(width: 14),
+                        SizedBox(width: 14),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Bộ sưu tập món ngon",
                                 style: TextStyle(
                                   color: Colors.white,
@@ -141,10 +141,10 @@ class _PageFavoriteState extends State<PageFavorite> {
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: 4),
                               Text(
                                 "Bạn đã lưu ${ctrl.listYeuThich.length} món yêu thích",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ],
                           ),
@@ -163,12 +163,12 @@ class _PageFavoriteState extends State<PageFavorite> {
                             ? "Đã bỏ khỏi danh sách yêu thích"
                             : ketQua == -1
                                 ? "Vui lòng đăng nhập để yêu thích"
-                                : "Không cập nhật được yêu thích";
+                                : "Không thể hoàn thành yêu cầu. Vui lòng thử lại.";
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(msg),
                             behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
+                            duration: Duration(seconds: 2),
                           ),
                         );
                       },
@@ -186,13 +186,13 @@ class _PageFavoriteState extends State<PageFavorite> {
   Widget _emptyState(IconData icon, String message, String? buttonText, VoidCallback? onPressed) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             _emptyStateContent(icon, message, null),
             if (buttonText != null && onPressed != null) ...[
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: mauChinh,
@@ -200,7 +200,7 @@ class _PageFavoriteState extends State<PageFavorite> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
                 onPressed: onPressed,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: Icon(Icons.refresh_rounded),
                 label: Text(buttonText),
               ),
             ],
@@ -218,19 +218,19 @@ class _PageFavoriteState extends State<PageFavorite> {
           width: 88,
           height: 88,
           decoration: BoxDecoration(
-            color: const Color(0xFFFFE7E7),
+            color: Color(0xFFFFE7E7),
             borderRadius: BorderRadius.circular(32),
           ),
           child: Icon(icon, size: 44, color: Colors.redAccent),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Text(
           title,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
         ),
         if (subtitle != null) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,

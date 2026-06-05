@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import "package:nhom2_flutter_app/page/page_main.dart";
-import 'package:nhom2_flutter_app/page/page_splash.dart';
-import 'package:nhom2_flutter_app/page/page_welcome.dart';
+import 'package:nhom2_flutter_app/page/page_home.dart';
+import 'package:nhom2_flutter_app/page/page_login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// TODO: thay URL va anon key Supabase cua nhom
 const String supabaseUrl = "https://tovuzqtkmwsoeaisbozr.supabase.co";
 const String supabaseAnonKey = "sb_publishable_OW8ZvoGSfTsfcDURaz_DMA_QNg0tDcA";
 
@@ -14,7 +12,7 @@ void main() async {
     url: supabaseUrl,
     anonKey: supabaseAnonKey,
   );
-  runApp(const CookBookApp());
+  runApp(CookBookApp());
 }
 
 class CookBookApp extends StatelessWidget {
@@ -28,40 +26,14 @@ class CookBookApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
       ),
-      home: const PageAppStart(),
+      home: PageAuthGate(),
     );
   }
 }
 
-class PageAppStart extends StatefulWidget {
-  const PageAppStart({super.key});
-
-  @override
-  State<PageAppStart> createState() => _PageAppStartState();
-}
-
-class _PageAppStartState extends State<PageAppStart> {
-  bool hetSplash = false;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!hetSplash) {
-      return PageSplash(
-        onHoanThanh: () => setState(() => hetSplash = true),
-      );
-    }
-    return const PageAuthGate();
-  }
-}
-
-class PageAuthGate extends StatefulWidget {
+class PageAuthGate extends StatelessWidget {
   const PageAuthGate({super.key});
 
-  @override
-  State<PageAuthGate> createState() => _PageAuthGateState();
-}
-
-class _PageAuthGateState extends State<PageAuthGate> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<AuthState>(
@@ -69,14 +41,18 @@ class _PageAuthGateState extends State<PageAuthGate> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting &&
             snapshot.data == null) {
-          return const Scaffold(
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("CookBook"),
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 10),
-                  Text("Loading..."),
+                  Text("Đang tải dữ liệu..."),
                 ],
               ),
             ),
@@ -84,9 +60,9 @@ class _PageAuthGateState extends State<PageAuthGate> {
         }
         final session = snapshot.data?.session;
         if (session != null) {
-          return const PageMain();
+          return PageHome();
         }
-        return const PageWelcome();
+        return PageLogin();
       },
     );
   }

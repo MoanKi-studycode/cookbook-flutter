@@ -23,8 +23,8 @@ class PageRecipeDetail extends StatefulWidget {
 }
 
 class _PageRecipeDetailState extends State<PageRecipeDetail> {
-  static const Color mauChinh = Color(0xFFE85D04);
-  static const Color mauNen = Color(0xFFFFFBF7);
+  static Color mauChinh = Color(0xFFE85D04);
+  static Color mauNen = Color(0xFFFFFBF7);
 
   Recipe? recipe;
   bool dangTai = true;
@@ -59,7 +59,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
       });
     } catch (e) {
       if (!mounted) return;
-      setState(() => errorMessage = "Không tải được chi tiết món ăn");
+      setState(() => errorMessage = "Không thể hiển thị thông tin món ăn");
       debugPrint("[PageRecipeDetail] taiChiTiet ERROR: $e");
     } finally {
       if (!mounted) return;
@@ -87,13 +87,13 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
         ? (thichMoi ? "Đã thêm vào yêu thích" : "Đã bỏ khỏi yêu thích")
         : ketQua == -1
             ? "Vui lòng đăng nhập để yêu thích"
-            : "Không cập nhật được yêu thích";
+            : "Không thể hoàn thành yêu cầu. Vui lòng thử lại.";
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: 2),
       ),
     );
   }
@@ -112,7 +112,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
       return Scaffold(
         backgroundColor: mauNen,
         appBar: AppBar(backgroundColor: mauNen, elevation: 0),
-        body: const Center(child: CircularProgressIndicator(color: mauChinh)),
+        body: Center(child: CircularProgressIndicator(color: mauChinh)),
       );
     }
 
@@ -120,7 +120,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
       return Scaffold(
         backgroundColor: mauNen,
         appBar: AppBar(
-          title: const Text("Chi tiết"),
+          title: Text("Chi tiết"),
           backgroundColor: mauNen,
           elevation: 0,
           foregroundColor: Colors.black87,
@@ -133,7 +133,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
       return Scaffold(
         backgroundColor: mauNen,
         appBar: AppBar(
-          title: const Text("Chi tiết"),
+          title: Text("Chi tiết"),
           backgroundColor: mauNen,
           elevation: 0,
           foregroundColor: Colors.black87,
@@ -154,25 +154,37 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
             SliverToBoxAdapter(child: _buildHeroImage(r)),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       r.ten,
-                      style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.15),
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.15),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        _infoChip(Icons.star_rounded, r.danhGia.toStringAsFixed(1)),
                         _infoChip(Icons.schedule_rounded, "${r.thoiGian} phút"),
                         _infoChip(Icons.category_rounded, tenCategory()),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 14),
+                    _sectionCard(
+                      title: "Độ khó",
+                      icon: Icons.equalizer_rounded,
+                      child: Text(
+                        getDoKhoText(r.doKho),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: mauChinh,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 14),
                     _sectionCard(
                       title: "Mô tả",
                       icon: Icons.notes_rounded,
@@ -181,7 +193,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                         style: TextStyle(color: Colors.grey.shade800, height: 1.45, fontSize: 15),
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    SizedBox(height: 14),
                     _sectionCard(
                       title: "Nguyên liệu",
                       icon: Icons.shopping_basket_rounded,
@@ -190,29 +202,29 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                           : Column(
                               children: listNL.map((e) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
+                                  padding: EdgeInsets.only(bottom: 10),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.only(top: 3),
+                                        margin: EdgeInsets.only(top: 3),
                                         width: 20,
                                         height: 20,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           color: Color(0xFFFFEAD6),
                                           shape: BoxShape.circle,
                                         ),
-                                        child: const Icon(Icons.check_rounded, size: 14, color: mauChinh),
+                                        child: Icon(Icons.check_rounded, size: 14, color: mauChinh),
                                       ),
-                                      const SizedBox(width: 10),
-                                      Expanded(child: Text(e, style: const TextStyle(height: 1.35))),
+                                      SizedBox(width: 10),
+                                      Expanded(child: Text(e, style: TextStyle(height: 1.35))),
                                     ],
                                   ),
                                 );
                               }).toList(),
                             ),
                     ),
-                    const SizedBox(height: 14),
+                    SizedBox(height: 14),
                     _sectionCard(
                       title: "Cách làm",
                       icon: Icons.menu_book_rounded,
@@ -221,7 +233,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                           : Column(
                               children: List.generate(listCL.length, (i) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 14),
+                                  padding: EdgeInsets.only(bottom: 14),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -235,12 +247,12 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                                         child: Center(
                                           child: Text(
                                             "${i + 1}",
-                                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
-                                      Expanded(child: Text(listCL[i], style: const TextStyle(height: 1.4))),
+                                      SizedBox(width: 12),
+                                      Expanded(child: Text(listCL[i], style: TextStyle(height: 1.4))),
                                     ],
                                   ),
                                 );
@@ -259,7 +271,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
 
   Widget _buildHeroImage(Recipe r) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
       child: Stack(
         children: [
           ClipRRect(
@@ -288,12 +300,12 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
             top: 12,
             right: 12,
             child: Material(
-              color: daThich ? const Color(0xFFFFE7E7) : Colors.white.withOpacity(0.92),
-              shape: const CircleBorder(),
+              color: daThich ? Color(0xFFFFE7E7) : Colors.white.withOpacity(0.92),
+              shape: CircleBorder(),
               child: IconButton(
                 tooltip: daThich ? "Bỏ yêu thích" : "Yêu thích",
                 icon: dangXuLyYeuThich
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2, color: mauChinh),
@@ -314,9 +326,9 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
   Widget _circleButton({required IconData icon, required VoidCallback onTap}) {
     return Material(
       color: Colors.white.withOpacity(0.92),
-      shape: const CircleBorder(),
+      shape: CircleBorder(),
       child: InkWell(
-        customBorder: const CircleBorder(),
+        customBorder: CircleBorder(),
         onTap: onTap,
         child: SizedBox(width: 46, height: 46, child: Icon(icon, color: Colors.black87)),
       ),
@@ -325,8 +337,8 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
 
   Widget _imageFallback() {
     return Container(
-      color: const Color(0xFFFFEAD6),
-      child: const Center(
+      color: Color(0xFFFFEAD6),
+      child: Center(
         child: Icon(Icons.restaurant_menu_rounded, size: 78, color: mauChinh),
       ),
     );
@@ -334,18 +346,18 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
 
   Widget _infoChip(IconData icon, String text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: const Color(0xFFFFE0C2)),
+        border: Border.all(color: Color(0xFFFFE0C2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: mauChinh),
-          const SizedBox(width: 6),
-          Text(text, style: const TextStyle(fontWeight: FontWeight.w800)),
+          SizedBox(width: 6),
+          Text(text, style: TextStyle(fontWeight: FontWeight.w800)),
         ],
       ),
     );
@@ -354,11 +366,11 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
   Widget _sectionCard({required String title, required IconData icon, required Widget child}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 4)),
         ],
       ),
@@ -371,16 +383,16 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFEAD6),
+                  color: Color(0xFFFFEAD6),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(icon, color: mauChinh, size: 20),
               ),
-              const SizedBox(width: 10),
-              Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+              SizedBox(width: 10),
+              Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
             ],
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           child,
         ],
       ),
@@ -390,7 +402,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
   Widget _emptyState(IconData icon, String message, String? buttonText, VoidCallback? onPressed) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -398,15 +410,15 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
               width: 78,
               height: 78,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFEAD6),
+                color: Color(0xFFFFEAD6),
                 borderRadius: BorderRadius.circular(28),
               ),
               child: Icon(icon, color: mauChinh, size: 38),
             ),
-            const SizedBox(height: 16),
-            Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16)),
+            SizedBox(height: 16),
+            Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
             if (buttonText != null && onPressed != null) ...[
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: mauChinh,
@@ -414,7 +426,7 @@ class _PageRecipeDetailState extends State<PageRecipeDetail> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
                 onPressed: onPressed,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: Icon(Icons.refresh_rounded),
                 label: Text(buttonText),
               ),
             ],
