@@ -99,7 +99,7 @@ class _PageHomeTabState extends State<_PageHomeTab> {
   }
 
   Future<void> taiTen() async {
-    final user = await UserProfileSnapshot.getCurrentUserProfile();
+    final user = await getCurrentUserProfile();
     if (!mounted) return;
     setState(() {
       tenHienThi = user?.hoTen ?? user?.email ?? "Bạn";
@@ -1201,7 +1201,7 @@ class _PageProfileTabState extends State<_PageProfileTab> {
   }
 
   Future<void> taiProfile() async {
-    final user = await UserProfileSnapshot.getCurrentUserProfile();
+    final user = await getCurrentUserProfile();
     if (!mounted) return;
     setState(() {
       ten = user?.hoTen ?? "Người dùng";

@@ -37,7 +37,7 @@ class _PageAccountState extends State<PageAccount> {
 
   Future<void> taiThongTin() async {
     setState(() => dangTai = true);
-    final user = await UserProfileSnapshot.getCurrentUserProfile();
+    final user = await getCurrentUserProfile();
     if (!mounted) return;
     setState(() {
       email = user?.email ?? "";
