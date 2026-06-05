@@ -20,12 +20,12 @@
 
 ### Nguyễn Thành Thục
 
-- [ ] Giao diện danh mục món ăn
-- [ ] Giao diện danh sách món ăn
-- [ ] Giao diện chi tiết công thức
-- [ ] Hỗ trợ chuyển UI từ Figma sang Flutter
-- [ ] Tối ưu giao diện cơ bản cho mobile
-- [ ] Hoàn thiện toàn bộ UI nâng cao theo bản Figma cuối cùng
+- [x] Giao diện danh mục món ăn (`page_category.dart`)
+- [x] Giao diện danh sách món ăn (`page_recipe_list.dart`)
+- [x] Giao diện chi tiết công thức (`page_recipe_detail.dart`)
+- [x] UI Welcome / Login / Register / Profile (branch `thanh_thuc`)
+- [x] Tối ưu giao diện cơ bản cho mobile
+- [ ] Hoàn thiện toàn bộ UI nâng cao theo bản Figma cuối cùng (nếu có bản mới)
 
 ### Trần Quốc Tiên
 

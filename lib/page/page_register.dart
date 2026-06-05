@@ -45,7 +45,7 @@ class _PageRegisterState extends State<PageRegister> {
       if (canDangNhapNgay(res)) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => PageMain()),
+          MaterialPageRoute(builder: (context) => const PageMain()),
               (route) => false,
         );
         return;
@@ -63,7 +63,7 @@ class _PageRegisterState extends State<PageRegister> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PageLogin()),
+        MaterialPageRoute(builder: (context) => const PageLogin()),
       );
     } catch (e) {
       if (!mounted) return;
@@ -107,7 +107,7 @@ class _PageRegisterState extends State<PageRegister> {
                 TextFormField(
                   controller: txtHoTen,
                   decoration: InputDecoration(
-                    labelText: "Họ và tên",
+                    labelText: "Họ và tên (Display name)",
                     hintText: "Nhập họ và tên của bạn",
                     prefixIcon: Icon(Icons.person_outline),
                     filled: true,

@@ -3,10 +3,13 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 String? layHoTenTuAuthMetadata(Map<String, dynamic>? metadata) {
   if (metadata == null) return null;
+  // Display name trong Supabase Auth (user_metadata)
+  final displayName = metadata['display_name']?.toString();
+  if (displayName != null && displayName.isNotEmpty) return displayName;
+  final fullName = metadata['full_name']?.toString();
+  if (fullName != null && fullName.isNotEmpty) return fullName;
   final hoTen = metadata['hoTen']?.toString();
   if (hoTen != null && hoTen.isNotEmpty) return hoTen;
-  final displayName = metadata['full_name']?.toString();
-  if (displayName != null && displayName.isNotEmpty) return displayName;
   final name = metadata['name']?.toString();
   if (name != null && name.isNotEmpty) return name;
   return null;
@@ -77,9 +80,19 @@ class UserSnapshot {
     final authUser = supabase.auth.currentUser;
     if (authUser == null) return null;
 
+    final tenAuth = layHoTenTuAuthMetadata(authUser.userMetadata);
     final tuDb = await getById(authUser.id);
+
     if (tuDb != null && (tuDb.hoTen ?? "").isNotEmpty) {
       return tuDb;
+    }
+
+    if (tenAuth != null && tenAuth.isNotEmpty) {
+      return User(
+        id: authUser.id,
+        email: authUser.email ?? "",
+        hoTen: tenAuth,
+      );
     }
 
     return User.fromAuthUser(authUser);

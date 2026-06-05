@@ -25,8 +25,9 @@ Future<AuthResponse> signUpAuth(
     final String ten = hoTen?.trim() ?? "";
     final Map<String, dynamic>? metadata = ten.isNotEmpty
         ? {
-            'hoTen': ten,
+            'display_name': ten,
             'full_name': ten,
+            'hoTen': ten,
           }
         : null;
 
@@ -108,8 +109,9 @@ Future<void> dongBoUserSauAuth({String? hoTen}) async {
       await supabase.auth.updateUser(
         UserAttributes(
           data: {
-            'hoTen': ten,
+            'display_name': ten,
             'full_name': ten,
+            'hoTen': ten,
           },
         ),
       );
@@ -117,6 +119,14 @@ Future<void> dongBoUserSauAuth({String? hoTen}) async {
       print("[Auth] updateUser metadata ERROR: $e");
     }
   }
+}
+
+Future<User?> getCurrentUser() async {
+  return supabase.auth.currentUser;
+}
+
+User? getCurrentUserSync() {
+  return supabase.auth.currentUser;
 }
 
 String? getCurrentUserId() {
