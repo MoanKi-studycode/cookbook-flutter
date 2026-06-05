@@ -133,41 +133,17 @@ class _PageLoginState extends State<PageLogin> {
                 ),
                 SizedBox(height: 24),
                 Center(
-                  child: Column(
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          if (txtEmail.text.trim().isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Vui lòng nhập email trước")),
-                            );
-                            return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PageVerifyOtp(email: txtEmail.text.trim()),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Đã đăng ký? Nhập mã OTP",
-                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => PageRegister()),
-                          );
-                        },
-                        child: Text(
-                          "Chưa có tài khoản? Đăng ký ngay",
-                          style: TextStyle(color: mauCamNut, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PageRegister()),
+                      );
+                    },
+                    child: Text(
+                      "Chưa có tài khoản? Đăng ký ngay",
+                      style: TextStyle(color: mauCamNut, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ],
