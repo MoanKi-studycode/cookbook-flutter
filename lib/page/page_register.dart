@@ -279,7 +279,7 @@ class _PageVerifyOtpState extends State<PageVerifyOtp> {
     }
     setState(() => dangXuLy = true);
     try {
-      final res = await verifyEmailOtpAuth(widget.email, ma);
+      await verifyEmailOtpAuth(widget.email, ma);
       if (!mounted) return;
     } catch (e) {
       print("[PageVerifyOtp] xacThucMa ERROR: $e");

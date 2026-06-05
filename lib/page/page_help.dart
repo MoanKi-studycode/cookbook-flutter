@@ -63,7 +63,7 @@ class PageHelp extends StatelessWidget {
               ]),
               SizedBox(height: 20),
               _section("Câu hỏi thường gặp", [
-                "Quên mật khẩu: dùng chức năng quên mật khẩu trên màn hình đăng nhập Supabase hoặc liên hệ email bên dưới.",
+                "Quên mật khẩu: liên hệ email bên dưới để được hỗ trợ.",
                 "Không nhận được mã OTP: kiểm tra hộp thư spam hoặc gửi lại mã sau 60 giây.",
                 "Không thêm được yêu thích: cần đăng nhập trước khi lưu món.",
               ]),

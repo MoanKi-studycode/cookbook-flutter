@@ -1,91 +1,88 @@
-# CookBook — `nhom2_flutter_app`
+# CookBook
 
-Ứng dụng Flutter quản lý công thức nấu ăn, dùng Supabase cho Auth và dữ liệu.
-
-**Tên ứng dụng:** CookBook
+Ứng dụng Flutter tra cứu công thức nấu ăn, sử dụng Supabase để xác thực người dùng và lưu trữ dữ liệu.
 
 ![CookBook icon](assets/icon/app_icon.png)
 
-## About
+## Công nghệ sử dụng
 
-- Nền tảng: Flutter + GetX
-- Backend: Supabase (Auth + PostgreSQL)
-- Chức năng chính: đăng nhập/đăng ký OTP, tìm kiếm món, lọc danh mục, yêu thích món ăn
+* Flutter
+* Dart
+* Supabase Auth
+* Supabase Database
+* GetX
+* Figma
 
-## Chức năng đã xây dựng (theo thành viên)
+## Chức năng chính
 
-### Trần Anh Tín
+* Đăng ký tài khoản
+* Đăng nhập
+* Xác thực OTP Email
+* Xem danh mục món ăn
+* Xem danh sách công thức
+* Xem chi tiết công thức (ảnh, nguyên liệu, cách làm, thời gian, độ khó)
+* Tìm kiếm món ăn
+* Lưu món ăn yêu thích
+* Xem và cập nhật thông tin cá nhân
+* Đăng xuất
 
-- [x] Cấu trúc project Flutter + điều hướng chính
-- [x] Cấu hình Supabase và kết nối app
-- [x] Auth: đăng nhập / đăng ký / OTP / quản lý session
-- [x] Thiết kế database, model/helper/controller chính
-- [x] Tài liệu database (`DATABASE_DIAGRAM.md`, `supabase_schema.sql`)
+## Database
 
-### Nguyễn Thành Thục
+Các bảng chính:
 
-- [x] Giao diện danh mục món ăn (`page_category.dart`)
-- [x] Giao diện danh sách món ăn (`page_recipe_list.dart`)
-- [x] Giao diện chi tiết công thức (`page_recipe_detail.dart`)
-- [x] UI Welcome / Login / Register / Profile (branch `thanh_thuc`)
-- [x] Tối ưu giao diện cơ bản cho mobile
-- [ ] Hoàn thiện toàn bộ UI nâng cao theo bản Figma cuối cùng (nếu có bản mới)
+* Category
+* Recipe
+* Favorite
+* User (profile `hoTen` đồng bộ từ Auth)
 
-### Trần Quốc Tiên
+Thông tin đăng nhập được quản lý bằng Supabase Auth.
 
-- [x] Tìm kiếm món ăn theo tên
-- [x] Lọc món ăn theo danh mục
-- [x] Lưu / bỏ lưu món yêu thích
-- [x] Màn hình danh sách món yêu thích
-- [x] Xử lý dữ liệu Supabase cho search/filter/favorite
-- [ ] Bộ kiểm thử tự động cho search/filter/favorite (hiện chủ yếu test tay)
+Cột `doKho` trên Recipe: `1` = Dễ, `2` = Trung bình, `3` = Khó.
 
-## Cấu hình nhanh
+## Cấu trúc thư mục
 
-1. Chạy file `supabase_schema.sql` trên Supabase SQL Editor.
-2. Trong `lib/main.dart`, cập nhật `supabaseUrl` và `supabaseAnonKey`.
-3. Ở Supabase Auth:
-   - Bật Email provider
-   - Nếu dùng OTP signup, template confirm dùng `{{ .Token }}`
+```txt
+lib/
+├── main.dart
+├── model/
+├── helper/
+├── controller/
+└── page/
+```
 
-## Chạy project
+## Cách chạy project
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-## Cấu trúc chính
+## Cấu hình Supabase
 
-```text
-lib/
-├── main.dart
-├── helper/
-│   ├── auth_helper.dart
-│   └── supabase_helper.dart
-├── model/
-│   ├── recipe.dart
-│   ├── category.dart
-│   └── favorite.dart
-├── controller/
-│   ├── recipe_controller.dart
-│   └── favorite_controller.dart
-└── page/
-    ├── page_login.dart
-    ├── page_register.dart
-    ├── page_home.dart
-    ├── page_recipe_detail.dart
-    ├── page_search.dart
-    └── page_favorite.dart
+Trong `lib/main.dart`, cập nhật:
+
+```dart
+supabaseUrl
+supabaseAnonKey
 ```
 
-## Hướng dẫn dùng GitLab
+Sau đó chạy file:
 
-- Không push các thư mục/file build local: `build/`, `.dart_tool/`, `android/local.properties`, `android/.gradle/`.
-- Tránh để lộ key Supabase khi repo public.
-- Làm việc theo nhánh feature, merge về `main` qua MR.
-- Mỗi khi đổi schema, cập nhật luôn `supabase_schema.sql`.
+```txt
+supabase_schema.sql
+```
 
-## Tài liệu
+trong Supabase SQL Editor.
 
-- `supabase_schema.sql`: script tạo bảng + policy
+## Thành viên
+
+| Thành viên        | Đóng góp |
+| ----------------- | -------- |
+| Trần Anh Tín      | 40%      |
+| Nguyễn Thành Thục | 30%      |
+| Trần Quốc Tiên    | 30%      |
+
+## Tài liệu thêm
+
+* `supabase_schema.sql` — script tạo bảng, RLS, dữ liệu mẫu
+* `DATABASE_DIAGRAM.md` — sơ đồ và mô tả database
