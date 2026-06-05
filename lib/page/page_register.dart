@@ -19,6 +19,9 @@ class _PageRegisterState extends State<PageRegister> {
   final TextEditingController txtPassword2 = TextEditingController();
   bool dangXuLy = false;
 
+  static const Color mauCamNut = Color(0xFFF2781B);
+  static const Color mauNenCamNhat = Color(0xFFFFF8F1);
+
   @override
   void dispose() {
     txtHoTen.dispose();
@@ -42,8 +45,8 @@ class _PageRegisterState extends State<PageRegister> {
       if (canDangNhapNgay(res)) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const PageMain()),
-          (route) => false,
+          MaterialPageRoute(builder: (context) => PageMain()),
+              (route) => false,
         );
         return;
       }
@@ -60,7 +63,7 @@ class _PageRegisterState extends State<PageRegister> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PageLogin()),
+        MaterialPageRoute(builder: (context) => PageLogin()),
       );
     } catch (e) {
       if (!mounted) return;
@@ -75,63 +78,154 @@ class _PageRegisterState extends State<PageRegister> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: mauNenCamNhat,
       appBar: AppBar(
-        title: const Text("Đăng ký"),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("Đăng ký", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black87,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(20),
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 5),
+                Text(
+                  "Vui lòng điền thông tin bên dưới để đăng ký.",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey.shade600,
+                    height: 1.4,
+                  ),
+                ),
+                SizedBox(height: 12),
                 TextFormField(
                   controller: txtHoTen,
-                  decoration: const InputDecoration(labelText: "Họ và tên"),
+                  decoration: InputDecoration(
+                    labelText: "Họ và tên",
+                    hintText: "Nhập họ và tên của bạn",
+                    prefixIcon: Icon(Icons.person_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                   validator: (v) => (v == null || v.isEmpty) ? "Nhập họ tên" : null,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: txtEmail,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: "Email"),
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    hintText: "email@example.com",
+                    prefixIcon: Icon(Icons.mail_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                   validator: (v) => (v == null || !v.contains("@")) ? "Email không hợp lệ" : null,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: txtPassword,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: "Mật khẩu"),
+                  decoration: InputDecoration(
+                    labelText: "Mật khẩu",
+                    hintText: "••••••••",
+                    prefixIcon: Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                   validator: (v) => (v == null || v.length < 6) ? "Ít nhất 6 ký tự" : null,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: txtPassword2,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: "Xác nhận mật khẩu"),
+                  decoration: InputDecoration(
+                    labelText: "Xác nhận mật khẩu",
+                    hintText: "••••••••",
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                   validator: (v) => v != txtPassword.text ? "Không trùng khớp" : null,
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: dangXuLy ? null : dangKy,
-                  child: dangXuLy
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Đăng ký"),
+                SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mauCamNut,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: dangXuLy ? null : dangKy,
+                    child: dangXuLy
+                        ? const SizedBox(
+                      height: 20, width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                        : const Text("Đăng ký", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PageLogin()),
-                    );
-                  },
-                  child: const Text("Đã có tài khoản? Đăng nhập"),
+                SizedBox(height: 24),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Đã có tài khoản? ",
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PageLogin()),
+                          );
+                        },
+                        child: Text(
+                          "Đăng nhập ngay",
+                          style: TextStyle(
+                            color: mauCamNut,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),

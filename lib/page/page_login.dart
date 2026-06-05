@@ -17,6 +17,9 @@ class _PageLoginState extends State<PageLogin> {
   final TextEditingController txtPassword = TextEditingController();
   bool dangXuLy = false;
 
+  static const Color mauCamNut = Color(0xFFF2781B);
+  static const Color mauNenCamNhat = Color(0xFFFFF8F1);
+
   @override
   void dispose() {
     txtEmail.dispose();
@@ -45,7 +48,7 @@ class _PageLoginState extends State<PageLogin> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const PageMain()),
-        (route) => false,
+            (route) => false,
       );
     } catch (e) {
       if (!mounted) return;
@@ -60,66 +63,118 @@ class _PageLoginState extends State<PageLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: mauNenCamNhat,
       appBar: AppBar(
-        title: const Text("Đăng nhập"),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Đăng nhập", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black87,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
                 TextFormField(
                   controller: txtEmail,
                   validator: validateEmail,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: "Email"),
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    hintText: "email@example.com",
+                    prefixIcon: Icon(Icons.mail_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 15),
                 TextFormField(
                   controller: txtPassword,
                   validator: validatePassword,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: "Mật khẩu"),
+                  decoration: InputDecoration(
+                    labelText: "Mật khẩu",
+                    hintText: "••••••••",
+                    prefixIcon: Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: mauCamNut, width: 1.5),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: dangXuLy ? null : dangNhap,
-                  child: dangXuLy
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Đăng nhập"),
+                SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mauCamNut,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: dangXuLy ? null : dangNhap,
+                    child: dangXuLy
+                        ? const SizedBox(
+                      height: 20, width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                        : const Text("Đăng nhập", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    if (txtEmail.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Nhập email trước")),
-                      );
-                      return;
-                    }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PageVerifyOtp(email: txtEmail.text.trim()),
+                SizedBox(height: 24),
+                Center(
+                  child: Column(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          if (txtEmail.text.trim().isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Vui lòng nhập email trước")),
+                            );
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PageVerifyOtp(email: txtEmail.text.trim()),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Đã đăng ký? Nhập mã OTP",
+                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text("Đã đăng ký? Nhập mã OTP"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PageRegister()),
-                    );
-                  },
-                  child: const Text("Chưa có tài khoản? Đăng ký"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PageRegister()),
+                          );
+                        },
+                        child: Text(
+                          "Chưa có tài khoản? Đăng ký ngay",
+                          style: TextStyle(color: mauCamNut, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
