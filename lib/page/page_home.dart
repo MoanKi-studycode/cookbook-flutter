@@ -1,3 +1,6 @@
+// NguyenThanhThuc - giao dien chinh, bottom nav, layout cac man
+// TranQuocTien - hien thi cong thuc, danh muc, loc mon
+// TranAnhTin - tab ca nhan, menu tai khoan va ho tro
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nhom2_flutter_app/controller/favorite_controller.dart';

@@ -1,3 +1,4 @@
+// TranQuocTien - model Favorite va truy van/quan ly yeu thich tren CSDL
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
 import 'package:nhom2_flutter_app/helper/supabase_helper.dart';
 import 'package:nhom2_flutter_app/model/recipe.dart';

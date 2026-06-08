@@ -1,3 +1,5 @@
+// TranAnhTin - khoi tao Supabase
+// NguyenThanhThuc - theme va khoi dong ung dung CookBook
 import 'package:flutter/material.dart';
 import 'package:nhom2_flutter_app/page/page_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

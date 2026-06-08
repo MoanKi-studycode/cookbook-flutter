@@ -1,3 +1,5 @@
+// NguyenThanhThuc - giao dien chi tiet cong thuc
+// TranQuocTien - nut yeu thich, FavoriteController
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nhom2_flutter_app/controller/favorite_controller.dart';

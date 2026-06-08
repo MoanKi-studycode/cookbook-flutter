@@ -1,3 +1,4 @@
+// TranQuocTien - model Category va truy van danh muc tu CSDL
 import 'package:nhom2_flutter_app/helper/supabase_helper.dart';
 
 class Category {

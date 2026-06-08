@@ -1,3 +1,5 @@
+// NguyenThanhThuc - giao dien splash screen
+// TranAnhTin - chuyen sang AuthGate sau khi tai
 import 'package:flutter/material.dart';
 import 'package:nhom2_flutter_app/page/page_auth_gate.dart';
 

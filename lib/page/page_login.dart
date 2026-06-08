@@ -1,3 +1,5 @@
+// NguyenThanhThuc - giao dien dang nhap
+// TranAnhTin - goi signInAuth
 import 'package:flutter/material.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
 import 'package:nhom2_flutter_app/page/page_register.dart';

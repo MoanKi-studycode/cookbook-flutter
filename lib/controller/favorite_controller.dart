@@ -1,3 +1,4 @@
+// TranQuocTien - quan ly danh sach yeu thich, dong bo trang thai voi CSDL
 import 'package:get/get.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
 import 'package:nhom2_flutter_app/model/favorite.dart';

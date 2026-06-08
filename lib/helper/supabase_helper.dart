@@ -1,3 +1,4 @@
+// TranAnhTin - ket noi Supabase va helper truy van chung (getMapData, getListData)
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;

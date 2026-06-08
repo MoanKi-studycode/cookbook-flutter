@@ -1,5 +1,6 @@
 import 'package:nhom2_flutter_app/helper/supabase_helper.dart';
 
+// TranAnhTin - model Recipe, chuan hoa va hien thi doKho (theo thiet ke CSDL)
 int chuanHoaDoKho(int doKho) {
   if (doKho <= 1) return 1;
   if (doKho >= 3) return 3;
@@ -74,6 +75,7 @@ class Recipe {
   }
 }
 
+// TranQuocTien - truy van cong thuc tu CSDL, tim kiem theo ten
 class RecipeSnapshot {
   static const String table = "Recipe";
 

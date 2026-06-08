@@ -1,3 +1,4 @@
+// TranAnhTin - xac thuc nguoi dung (Supabase Auth): dang ky, dang nhap, OTP, cap nhat ho ten, doi mat khau, profile
 import 'package:flutter/material.dart';
 import 'package:nhom2_flutter_app/helper/supabase_helper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;

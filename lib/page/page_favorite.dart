@@ -1,3 +1,5 @@
+// NguyenThanhThuc - giao dien danh sach yeu thich
+// TranQuocTien - FavoriteController, tai du lieu yeu thich
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nhom2_flutter_app/controller/favorite_controller.dart';

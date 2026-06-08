@@ -1,3 +1,5 @@
+// NguyenThanhThuc - giao dien dang ky va nhap OTP
+// TranAnhTin - logic dang ky, xac thuc OTP, chuyen trang
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nhom2_flutter_app/helper/auth_helper.dart';
